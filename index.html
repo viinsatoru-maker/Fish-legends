@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fishing Legend - Dengan Fitur Arena & Gamepass</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="stats-bar">
+                <div class="stat">
+                    <span>💰</span>
+                    <span id="coins">500</span>
+                </div>
+                <div class="stat">
+                    <span>💎</span>
+                    <span id="diamonds">0</span>
+                </div>
+                <div class="stat">
+                    <span>⭐</span>
+                    <span id="level">1</span>
+                </div>
+                <div class="stat">
+                    <span>🌟</span>
+                    <span id="prestige">0</span>
+                </div>
+                <div class="stat" id="spot-display">
+                    <span>📍 Danau Biasa</span>
+                </div>
+                <div class="stat" id="weather-display">
+                    <span>☀️ Cerah</span>
+                </div>
+            </div>
+            
+            <div class="spot-buttons" id="spot-buttons">
+                <!-- Spot buttons akan diisi oleh JavaScript -->
+            </div>
+        </header>
+
+        <!-- Main Game Area -->
+        <main class="main-content">
+            <div class="fishing-area">
+                <div class="water" id="fish-display">
+                    <!-- Fish animation akan diisi oleh JavaScript -->
+                </div>
+                <div class="fishing-rod">
+                    <div class="rod"></div>
+                    <div class="fishing-line"></div>
+                    <div class="bobber"></div>
+                    <div class="hook"></div>
+                </div>
+                
+                <!-- Minigame Indicator -->
+                <div class="minigame-indicator" id="minigame-indicator" style="display: none;">
+                    <div class="indicator-target"></div>
+                    <div class="indicator-needle"></div>
+                </div>
+                
+                <button class="fish-btn" id="fish-btn">🎣 Mancing!</button>
+            </div>
+
+            <div class="active-effects" id="active-effects">
+                <!-- Active effects akan ditampilkan di sini -->
+            </div>
+        </main>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs">
+            <button class="tab active" data-tab="backpack">🎒 Backpack</button>
+            <button class="tab" data-tab="shop">🏪 Shop</button>
+            <button class="tab" data-tab="sell">💰 Sell</button>
+            <button class="tab" data-tab="gacha">🎰 Gacha</button>
+            <button class="tab" data-tab="quests">📜 Quests</button>
+            <button class="tab" data-tab="aquarium">🐠 Aquarium</button>
+            <button class="tab" data-tab="village">🏡 Village</button>
+            <!-- ============ TAB BARU ============ -->
+            <button class="tab" data-tab="colosseum">🏟️ Arena</button>
+            <button class="tab" data-tab="gamepass">🎟️ Gamepass</button>
+            <button class="tab" data-tab="daily-missions">📋 Misi Harian</button>
+            <button class="tab" data-tab="achievements">🏆 Prestasi</button>
+            <button class="tab" data-tab="diamond-shop">💎 Diamond Shop</button>
+            <button class="tab" data-tab="settings">⚙️ Settings</button>
+        </nav>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- Backpack Tab -->
+            <div id="backpack" class="tab-pane active">
+                <div class="inventory-controls">
+                    <input type="text" id="search-fish" placeholder="Cari ikan...">
+                    <button id="sort-rarity">Sort Rarity</button>
+                    <button id="sort-price">Sort Harga</button>
+                    <button id="sort-newest">Sort Terbaru</button>
+                </div>
+                <div class="items-grid" id="backpack-items">
+                    <p class="empty-message">Belum ada ikan di backpack</p>
+                </div>
+            </div>
+
+            <!-- Shop Tab -->
+            <div id="shop" class="tab-pane">
+                <div class="shop-categories">
+                    <button class="category-btn active" data-category="rods">🎣 Rods</button>
+                    <button class="category-btn" data-category="baits">🪱 Baits</button>
+                    <button class="category-btn" data-category="potions">🧪 Potions</button>
+                    <button class="category-btn" data-category="upgrades">🏠 Upgrades</button>
+                </div>
+                <div class="items-grid" id="shop-items">
+                    <!-- Shop items akan diisi oleh JavaScript -->
+                </div>
+            </div>
+
+            <!-- Sell Tab -->
+            <div id="sell" class="tab-pane">
+                <div class="sell-header">
+                    <h3>Total: <span id="sell-total">0</span> koin</h3>
+                    <div class="sell-buttons">
+                        <button id="sell-btn" disabled>Jual Selected</button>
+                        <button id="sell-all-btn">Jual Semua</button>
+                    </div>
+                </div>
+                <div class="auto-sell">
+                    <h4>Auto Sell:</h4>
+                    <label><input type="checkbox" id="auto-sell-basic"> Basic</label>
+                    <label><input type="checkbox" id="auto-sell-legendary"> Legendary</label>
+                    <label><input type="checkbox" id="auto-sell-mythical"> Mythical</label>
+                    <label><input type="checkbox" id="auto-sell-secret"> Secret</label>
+                </div>
+                <div class="items-grid" id="sell-items">
+                    <p class="empty-message">Tidak ada ikan untuk dijual</p>
+                </div>
+            </div>
+
+            <!-- Gacha Tab -->
+            <div id="gacha" class="tab-pane">
+                <div class="gacha-section">
+                    <button class="gacha-btn" id="gacha-btn">🎰 Spin Gacha (500 coins)</button>
+                    
+                    <!-- Luck Display -->
+                    <div id="luck-display"></div>
+                    
+                    <div class="gacha-stats">
+                        <p>Total Spins: <span id="total-spins">0</span></p>
+                        <p>Rods Obtained: <span id="rods-obtained">0</span>/<span id="total-rods">5</span></p>
+                    </div>
+                    
+                    <!-- Gacha Rewards List -->
+                    <div style="margin-top: 20px;">
+                        <h4>🎁 Gacha Rewards</h4>
+                        <div id="gacha-rewards">
+                            <!-- Gacha rewards akan diisi oleh JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quests Tab -->
+            <div id="quests" class="tab-pane">
+                <div class="quests-list" id="quests-list">
+                    <!-- Quests akan diisi oleh JavaScript -->
+                </div>
+            </div>
+
+            <!-- Aquarium Tab -->
+            <div id="aquarium" class="tab-pane">
+                <div class="aquarium-stats">
+                    <p>Species Collected: <span id="species-count">0</span>/<span id="total-species">0</span> (<span id="collection-percent">0%</span>)</p>
+                </div>
+                <div class="fish-tanks">
+                    <div class="fish-tank" id="basic-tank">
+                        <h4>Basic Fish</h4>
+                    </div>
+                    <div class="fish-tank" id="legendary-tank">
+                        <h4>Legendary Fish</h4>
+                    </div>
+                    <div class="fish-tank" id="mythical-tank">
+                        <h4>Mythical Fish</h4>
+                    </div>
+                    <div class="fish-tank" id="secret-tank">
+                        <h4>Secret Fish</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Village Tab -->
+            <div id="village" class="tab-pane">
+                <div class="village-stats">
+                    <p>Reputation: <span id="reputation">0</span></p>
+                    <p>Assistants: <span id="assistant-count">0</span>/3</p>
+                    <p>Hut Level: <span id="hut-level">1</span></p>
+                </div>
+                <div class="upgrades-grid" id="village-upgrades">
+                    <!-- Village upgrades akan diisi oleh JavaScript -->
+                </div>
+            </div>
+
+            <!-- ============ TAB BARU: ARENA COLOSSEUM ============ -->
+            <div id="colosseum" class="tab-pane">
+                <div class="arena-container">
+                    <h2>🏟️ ARENA COLOSSEUM</h2>
+                    <p>Adu ikanmu melawan ikan NPC! Resiko tinggi, hadiah tinggi!</p>
+                    
+                    <select id="arena-tier" class="arena-tier-select">
+                        <option value="">Pilih Tier Arena</option>
+                    </select>
+                    
+                    <select id="arena-fish" class="arena-fish-select">
+                        <option value="">Pilih Ikan</option>
+                    </select>
+                    
+                    <button id="arena-fight-btn" class="arena-fight-btn">⚔️ MULAI PERTARUNGAN ⚔️</button>
+                    
+                    <div class="arena-stats">
+                        <div class="stat-card">
+                            <div class="stat-label">Menang</div>
+                            <div class="stat-value" id="arena-wins">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Kalah</div>
+                            <div class="stat-value" id="arena-losses">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Win Streak</div>
+                            <div class="stat-value" id="arena-streak">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Streak Tertinggi</div>
+                            <div class="stat-value" id="arena-highest-streak">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Total Pendapatan</div>
+                            <div class="stat-value" id="arena-total-earnings">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Fight Hari Ini</div>
+                            <div class="stat-value" id="arena-daily-fights">0/20</div>
+                        </div>
+                    </div>
+                    
+                    <button id="show-graveyard-btn" class="arena-fight-btn" style="background: purple; margin-top: 10px;">💀 Lihat Kuburan Ikan</button>
+                </div>
+            </div>
+
+            <!-- ============ TAB BARU: GAMEPASS ============ -->
+            <div id="gamepass" class="tab-pane">
+                <div class="gamepass-container">
+                    <h2>🎟️ FISHING LEGEND PASS</h2>
+                    
+                    <div class="gamepass-header">
+                        <div>
+                            <span class="gamepass-level">Level <span id="gamepass-level">1</span>/20</span>
+                        </div>
+                        <button id="buy-gamepass-btn" class="buy-gamepass-btn">💎 Beli Premium (500💎)</button>
+                    </div>
+                    
+                    <div class="gamepass-exp-bar">
+                        <div class="gamepass-exp-progress" id="gamepass-progress" style="width: 0%;"></div>
+                    </div>
+                    <div class="gamepass-exp-text" id="gamepass-exp">0 / 100 EXP</div>
+                    
+                    <div class="gamepass-rewards">
+                        <div class="free-rewards">
+                            <h3>🎁 Free Rewards</h3>
+                            <div id="gamepass-free-rewards"></div>
+                        </div>
+                        <div class="premium-rewards">
+                            <h3>💎 Premium Rewards</h3>
+                            <div id="gamepass-premium-rewards"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============ TAB BARU: DAILY MISSIONS ============ -->
+            <div id="daily-missions" class="tab-pane">
+                <div class="missions-container">
+                    <h2>📋 MISI HARIAN</h2>
+                    <p>Reset setiap hari! Dapatkan EXP Gamepass dan Berlian!</p>
+                    <div id="daily-missions-list"></div>
+                </div>
+            </div>
+
+            <!-- ============ TAB BARU: ACHIEVEMENTS ============ -->
+            <div id="achievements" class="tab-pane">
+                <div class="achievements-container">
+                    <h2>🏆 PRESTASI</h2>
+                    <div id="achievements-list"></div>
+                </div>
+            </div>
+
+            <!-- ============ TAB BARU: DIAMOND SHOP ============ -->
+            <div id="diamond-shop" class="tab-pane">
+                <div class="diamond-shop-container">
+                    <h2>💎 DIAMOND SHOP</h2>
+                    <p>Belanja item premium pake berlian!</p>
+                    <div id="diamond-shop-items"></div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings" class="tab-pane">
+                <div class="settings-section">
+                    <h3>Game Settings</h3>
+                    <label><input type="checkbox" id="sound-effects" checked> Sound Effects</label>
+                    <label><input type="checkbox" id="animations" checked> Animations</label>
+                    <label><input type="checkbox" id="notifications" checked> Notifications</label>
+                </div>
+                <div class="settings-section">
+                    <h3>Save Management</h3>
+                    <button id="export-save">Export Save</button>
+                    <button id="import-save">Import Save</button>
+                    <button id="prestige-btn">Prestige</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="result-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="result-title">Hasil Mancing</h3>
+            <div id="result-content"></div>
+        </div>
+    </div>
+
+    <div id="gacha-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="gacha-title">Hasil Gacha</h3>
+            <div id="gacha-content"></div>
+        </div>
+    </div>
+
+    <!-- ============ MODAL BARU: ARENA RESULT ============ -->
+    <div id="arena-result-modal" class="modal">
+        <div class="modal-content" style="background: transparent; box-shadow: none;">
+            <!-- Content akan diisi oleh JavaScript -->
+        </div>
+    </div>
+
+    <!-- ============ MODAL BARU: REVIVE ============ -->
+    <div id="revive-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>💀 KUBURAN IKAN</h3>
+            <p>Revive ikan matimu dengan berlian!</p>
+            <div id="revive-items" class="revive-items"></div>
+        </div>
+    </div>
+
+    <div id="prestige-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Prestige</h3>
+            <div id="prestige-content"></div>
+        </div>
+    </div>
+
+    <!-- Notification System -->
+    <div id="notification-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
